@@ -8,6 +8,6 @@ Also Check Auto Delegator i Posted
 >- [Auto Delegator Gitopia](https://github.com/mggnet/auto-delegate-gitopia)
 
 Find Me on 👇 <br>
-Twitter : https://twitter.com/marketgogreen <br>
+Twitter : https://twitter.com/tghirfn <br>
 Discord : MarketGoGreen#3697 <br>
 Website : https://Astronode.tech/
