@@ -16,6 +16,7 @@ Thanks to:
 >- [https://stats.qtestnet.org/](https://stats.qtestnet.org/)
 
 
+
 ### Minimum Requirements 
  - 4x CPUs; the faster clock speed the better
  - 8GB RAM
