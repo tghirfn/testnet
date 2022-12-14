@@ -5,28 +5,27 @@
 # Q-Blockchain node setup for Testnet
 
 Thanks to:
->- [Megumiiiiii](https://github.com/Megumiiiiii)
 >- [BeritaCryptoo](https://t.me/BeritaCryptoo)
 
-Explorer:
->-  https://stats.qtestnet.org/
 
-Incentive Form:
->-  https://itn.qdev.li/
+# Official Links
+### [Official Document](https://docs.qtestnet.org/how-to-setup-validator/)
+### [Q Official Discord](https://discord.gg/nYaCmDw4ku)
 
-## Hardware Requirements
+# Explorer
+### [EXPLORER](https://stats.qtestnet.org/)
 
-### Minimum Hardware Requirements
+### Minimum Requirements 
  - 4x CPUs; the faster clock speed the better
  - 8GB RAM
  - 200GB of storage (SSD or NVME)
  - Permanent Internet connection (traffic will be minimal during testnet; 10Mbps will be plenty - for production at least 100Mbps is expected)
 
-## Set up your Node 👇
+NOTE : Run as `root` user
+
 ### Update
 ```
-sudo apt update && \
-sudo apt upgrade
+sudo apt update && sudo apt upgrade
 ```
 
 ### Install Docker
@@ -35,33 +34,31 @@ sudo apt-get update && sudo apt install jq && sudo apt install apt-transport-htt
 ```
 `y` 
 
-### Install Docker Compose
+### Download Binary
 ```
-apt install docker-compose
-```
-
-### Automatic Script
-```
-wget -O qblockchain.sh https://raw.githubusercontent.com/mggnet/testnet/main/QBlockchain/qblockchain.sh && chmod +x qblockchain.sh && ./qblockchain.sh
+git clone https://gitlab.com/q-dev/testnet-public-tools.git && cd testnet-public-tools/testnet-validator/
 ```
 
 ## Creating a Wallet Password
 
 ```
 cd ~/testnet-public-tools/testnet-validator
+mkdir keystore
 nano keystore/pwd.txt
 ```
 
 > * Create a password that is easy to remember, 8 digits
 > * Save, CTRL+X Y Enter
 
-## Create Wallet
+### Create Wallet
 
 ```
 docker run --entrypoint="" --rm -v $PWD:/data -it qblockchain/q-client:testnet geth account new --datadir=/data --password=/data/keystore/pwd.txt
 ```
 
 <figure><img src="https://580801350-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FyjqqGlG6vZEVZjseIV1U%2Fuploads%2FxtMzhzWyqteU5sr4utgl%2FScreenshot_1.png?alt=media&#x26;token=214e86ec-3c8c-4219-9f1a-5d569d9f3c9a" alt=""><figcaption></figcaption></figure>
+
+SAVE THE OUTPUT!!!
 
 ## Claim Faucet <a href="#claim-faucet" id="claim-faucet"></a>
 
@@ -70,45 +67,47 @@ Claim the faucet using your address: https://faucet.qtestnet.org/
 <figure><img src="https://580801350-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FyjqqGlG6vZEVZjseIV1U%2Fuploads%2FvQKStaT0SRuLqpZTXxCg%2FScreenshot_3.png?alt=media&#x26;token=10fa6577-5745-4358-a16f-d8051191ba0f" alt=""><figcaption></figcaption></figure>
 
 
-## Edit .env <a href="#edit-.env" id="edit-.env"></a>
-
+### Configure `.env`
+```
+cp .env.example .env
 nano .env
->q-client:1.2.2
->
-> Edit theADDRESS=Your address without 0x&#x20;
->
-> IP=IP of your VPS
->
-> EXT_PORT=30303
->
+```
 
-Example:
+Add Address without `0x` and your Public IP and save settings `CTRL+X` `y` and `ENTER`
 
-<a href="https://imgbb.com/"><img src="https://i.ibb.co/8jQ6ygh/Capture.jpg" alt="Capture" border="0" /></a>
+Example : 
 
-Save
+ <img height="400" height="auto" src="https://user-images.githubusercontent.com/34649601/206742445-4c80d903-09bd-4e80-ac1f-f8711ec4f8f2.png">
 
-## Edit config.json <a href="#edit-config.json" id="edit-config.json"></a>
-
+### Configure `config.json`
+```
 nano config.json
+```
+Add Address without `0x` and your Password from the beginning and save `CTRL+X` `y` and `ENTER`
 
-> Edit the "address" section: "your address without 0x", "password": "your password created in the first step", Example:
+<img height="400" height="auto" src="https://user-images.githubusercontent.com/34649601/206742620-1c42d1a7-34c6-4b8c-a1da-95b2d0e3b577.png">
 
-Save
-
-<figure><img src="https://580801350-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FyjqqGlG6vZEVZjseIV1U%2Fuploads%2FRY5MOGgYwVS2POnor2sI%2FScreenshot_5.png?alt=media&#x26;token=6690d9df-b354-41ed-b91e-ad4fd7a888f9" alt=""><figcaption></figcaption></figure>
-
-## Stake to Contract <a href="#stake-ke-contract" id="stake-ke-contract"></a>
-
+### Stake to the contract
 ```
 docker run --rm -v $PWD:/data -v $PWD/config.json:/build/config.json qblockchain/js-interface:testnet validators.js
 ```
 
-**Okay !**
+### Export your private key to Metamask 
+```
+cd testnet-public-tools
+chmod +x run-js-tools-in-docker.sh
+./run-js-tools-in-docker.sh
+npm install
+```
+```
+chmod +x extract-geth-private-key.js
+node extract-geth-private-key <WALLET_ADDRESS> ../testnet-validator/ $PASSWORD
+```
+Change `<WALLET_ADDRESS>` To your Wallet address
 
-<figure><img src="https://580801350-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FyjqqGlG6vZEVZjseIV1U%2Fuploads%2Fm1m9bQOIH0G3TCr77hOp%2FScreenshot_6.png?alt=media&#x26;token=8b26db7a-d16c-4300-bd39-a296152a8c35" alt=""><figcaption></figcaption></figure>
+After saving your private key exit the container `exit`
 
-## Register Validator <a href="#mendaftar" id="mendaftar"></a>
+# Registering Validator
 
 In order to register your node you have to register in the Form : [Register Form](https://itn.qdev.li/)
 
@@ -118,42 +117,61 @@ After successfully register your validator you will receive your validator name
 
 <img height="400" height="auto" src="https://user-images.githubusercontent.com/34649601/206744494-8418897e-226c-49be-a073-4ed939084384.png">
 
-
-**Edit the file **
-
+### Configure docker-compose.yaml
 ```
+cd testnet-validator
 nano docker-compose.yaml
 ```
+Then add `--ethstats=ITN-testname-ecd07:qstats-testnet@stats.qtestnet.org` 
 
-> In the section after `"geth"` add
-```
-"--ethstats=ITN-YOUR_VALIDATOR_NAME-YOUR_CODE_NAME:qstats-testnet@stats.qtestnet.org",​
-```
-> Example
+Example : 
 
 <img height="450" height="auto" src="https://user-images.githubusercontent.com/34649601/206747640-e29e7f73-a549-416a-b52f-6a138f402212.png">
 
-## Run NODE <a href="#jalankan-node" id="jalankan-node"></a>
 
+Then Run the Validator : 
 ```
 docker compose up -d
 ```
 
-<figure><img src="https://580801350-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FyjqqGlG6vZEVZjseIV1U%2Fuploads%2FvW2zc0gkbpbKts26ddRx%2FScreenshot_12.png?alt=media&#x26;token=6f87d9d7-758a-4b6d-98db-439f8c65af96" alt=""><figcaption></figcaption></figure>
-
-## LOGS Check <a href="#cek-logs" id="cek-logs"></a>
-
+Check logs ( You have to be in the compose directory! )
 ```
-cd ~/testnet-public-tools/testnet-validator
 docker compose logs -f
 ```
+CTRL+C to exit logs
 
-<figure><img src="https://580801350-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FyjqqGlG6vZEVZjseIV1U%2Fuploads%2F8cbem56BfMlHTa3qmTIx%2FScreenshot_13.png?alt=media&#x26;token=28d40140-e1bc-494b-85d1-a2369a67d1d6" alt=""><figcaption></figcaption></figure>
+## Check your validator 
 
-* To exit the logs session use `CTRL+C` or `CTRL+Z`.
+### [Q Explorer](https://stats.qtestnet.org/)
 
-## Check your Validator Name <a href="#cek-nama-validator-kalian" id="cek-nama-validator-kalian"></a>
+# Run OmniBride (OPTIONAL) For learning purposes
 
-[Q Network Status](https://stats.qtestnet.org/)
+### Configure Omnibride Oracle
+```
+cd $HOME
+cd testnet-public-tools/omnibridge-oracle
+cp .env.testnet .env
+nano .env
+```
 
-#### ​ <a href="#undefined" id="undefined"></a>
+Change this 3 Value 
+
+<img height="450" height="auto" src="https://user-images.githubusercontent.com/34649601/206751937-40a418fc-c60d-4d3c-bebc-c7814b065b86.png">
+
+
+`ORACLE_VALIDATOR_ADDRESS` :	`Provide your Q validator address. Example: 0xac8e5047d122f801...`
+
+`ORACLE_VALIDATOR_ADDRESS_PRIVATE_KEY` :	`Provide your Q validator private key. Example: a385db8296ceb9a....`
+
+`COMMON_HOME_RPC_URL` :	`You can keep the default, use https://rpc.qtestnet.org or use the RPC endpoint of our own full node if you are operating one.`
+
+`COMMON_FOREIGN_RPC_URL` :	`Provide an RPC endpoint of a client of the blockchain on the other side of the bridge. Q testnet bridged to the Ethereum Rinkeby network. You can use your own ethereum client, a public endpoint or create an infura account for free to get a personal Ethereum Rinkeby access point (e.g. https://rinkeby.infura.io/v3/1673abc....).`
+
+### Run your docker-compose
+```
+docker compose up -d
+docker compose logs -f
+```
+To check logs You have to be in the compose directory!
+
+`CTRL+C` to exit logs
