@@ -45,9 +45,7 @@ git clone https://gitlab.com/q-dev/testnet-public-tools.git && cd testnet-public
 ## Creating a Wallet Password
 
 ```
-cd ~/testnet-public-tools/testnet-validator
-mkdir keystore
-nano keystore/pwd.txt
+cd ~/testnet-public-tools/testnet-validator && mkdir keystore && nano keystore/pwd.txt
 ```
 
 > * Create a password that is easy to remember, 8 digits
